@@ -1,0 +1,26 @@
+import requests
+
+def get_weather(city, api_key):
+    base_url = "http://api.openweathermap.org/data/2.5/weather"
+    params = {
+        'q': city,
+        'appid': api_key,
+        'units': 'metric'  # for Celsius
+    }
+
+    response = requests.get(base_url, params=params)
+    data = response.json()
+
+    if response.status_code == 200:
+        print(f"Weather in {data['name']}, {data['sys']['country']}")
+        print(f"Temperature: {data['main']['temp']}°C")
+        print(f"Weather: {data['weather'][0]['description']}")
+        print(f"Humidity: {data['main']['humidity']}%")
+        print(f"Wind Speed: {data['wind']['speed']} m/s")
+    else:
+        print("Error:", data.get("message", "Failed to fetch data."))
+
+# Example usage
+api_key = "12f7e79e2fd49c4cf1c07e14de5016e0"  # Replace with your actual API key
+city = input("Enter city name: ")
+get_weather(city, api_key)
